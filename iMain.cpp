@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <math.h>
-#include <windows.h>
+// #include <windows.h>
 #include "iGraphics.h"
 #include "iSound.h"
 #include <time.h>
@@ -1723,17 +1723,23 @@ void ballMotion(void)
 }
 void toggleFullscreen(void)
 {
-    iToggleFullscreen();
     isFullscreen = !isFullscreen;
     if (isFullscreen)
     {
-        int screen_w = GetSystemMetrics(SM_CXSCREEN);
-        int screen_h = GetSystemMetrics(SM_CYSCREEN);
-        offset_x = (screen_w - screen_width) / 2;
-        offset_y = (screen_h - screen_height) / 2;
+        // Save window position and size
+        glutFullScreen();
+        // Get screen dimensions
+        int screenWidth = glutGet(GLUT_SCREEN_WIDTH);
+        int screenHeight = glutGet(GLUT_SCREEN_HEIGHT);
+        // Calculate offsets to center the game
+        offset_x = (screenWidth - screen_width) / 2;
+        offset_y = (screenHeight - screen_height) / 2;
     }
     else
     {
+        // Reset to windowed mode
+        glutReshapeWindow(screen_width, screen_height);
+        glutPositionWindow(100, 100);
         offset_x = 0;
         offset_y = 0;
     }
